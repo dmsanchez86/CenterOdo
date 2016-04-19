@@ -58,11 +58,12 @@ public class Conexion {
         int affectedRows = -1;
         
         try {
-            query = conection.prepareStatement("INSERT INTO usuario VALUES(?, ?, MD5(?), ?)");
+            query = conection.prepareStatement("INSERT INTO usuario VALUES(?, ?, MD5(?), ?, ?)");
             query.setString(1, null);
             query.setString(2, ""+id);
             query.setString(3, "12345");
             query.setLong(4, id);
+            query.setInt(5, 4);
 
             affectedRows = query.executeUpdate();
 
@@ -71,5 +72,23 @@ public class Conexion {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public int validateLogin(String user, String password) {
+        try {
+            query = conection.prepareStatement("SELECT idPerfil FROM usuario WHERE usuario = ? AND clave =  MD5(?)");
+            query.setString(1, user);
+            query.setString(2, password);
+
+            data = query.executeQuery();
+
+            if(data.next()){
+                return data.getInt("idPerfil");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return -1;
     }
 }
