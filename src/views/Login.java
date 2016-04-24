@@ -5,6 +5,7 @@
  */
 package views;
 
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import models.Conexion;
 
@@ -163,25 +164,29 @@ public class Login extends javax.swing.JFrame {
             txtPassword.requestFocus();
         }else{
             
-            String[] rolUser = conection.validateLogin(user, password);
-            
-            if(Integer.parseInt(rolUser[0]) == 1){
-                JOptionPane.showMessageDialog(this, "Eres un paciente");
-            }else if(Integer.parseInt(rolUser[0]) == 2){
-                this.setVisible(false);
-                PersonalMedicoForm m = new PersonalMedicoForm();
-                m.setVisible(true);
-            }else if(Integer.parseInt(rolUser[0]) == 3){
-                this.setVisible(false);
-                AuxClinicoForm m = new AuxClinicoForm();
-                m.setVisible(true);
-            }else if(Integer.parseInt(rolUser[0]) == 4){
-                this.setVisible(false);
-                PatientForm m = new PatientForm();
-                m.idPaciente = rolUser[1];
-                m.setVisible(true);
-            }else{
-                JOptionPane.showMessageDialog(this, "El usuario no existe en la base de datos");
+            try{
+                String[] rolUser = conection.validateLogin(user, password);
+
+                if(Integer.parseInt(rolUser[0]) == 1){
+                    JOptionPane.showMessageDialog(this, "Eres un paciente");
+                }else if(Integer.parseInt(rolUser[0]) == 2){
+                    this.setVisible(false);
+                    PersonalMedicoForm m = new PersonalMedicoForm();
+                    m.setVisible(true);
+                }else if(Integer.parseInt(rolUser[0]) == 3){
+                    this.setVisible(false);
+                    AuxClinicoForm m = new AuxClinicoForm();
+                    m.setVisible(true);
+                }else if(Integer.parseInt(rolUser[0]) == 4){
+                    this.setVisible(false);
+                    PatientForm m = new PatientForm();
+                    m.idPaciente = rolUser[1];
+                    m.setVisible(true);
+                }else{
+                    JOptionPane.showMessageDialog(this, "El usuario no existe en la base de datos");
+                }
+            }catch(NumberFormatException | HeadlessException e){
+               JOptionPane.showMessageDialog(this, "El usuario no existe");
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
