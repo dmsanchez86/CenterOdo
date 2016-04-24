@@ -163,23 +163,23 @@ public class Login extends javax.swing.JFrame {
             txtPassword.requestFocus();
         }else{
             
-            int rolUser = conection.validateLogin(user, password);
-            System.out.println(rolUser);
-            if(rolUser == 1){
+            String[] rolUser = conection.validateLogin(user, password);
             
-            }else if(rolUser == 2){
+            if(Integer.parseInt(rolUser[0]) == 1){
+                JOptionPane.showMessageDialog(this, "Eres un paciente");
+            }else if(Integer.parseInt(rolUser[0]) == 2){
                 this.setVisible(false);
                 PersonalMedicoForm m = new PersonalMedicoForm();
                 m.setVisible(true);
-            }else if(rolUser == 3){
+            }else if(Integer.parseInt(rolUser[0]) == 3){
                 this.setVisible(false);
                 AuxClinicoForm m = new AuxClinicoForm();
                 m.setVisible(true);
-            }else if(rolUser == 4){
-                JOptionPane.showMessageDialog(this, "Eres un paciente");
-//                this.setVisible(false);
-//                MainForm m = new MainForm();
-//                m.setVisible(true);
+            }else if(Integer.parseInt(rolUser[0]) == 4){
+                this.setVisible(false);
+                PatientForm m = new PatientForm();
+                m.idPaciente = rolUser[1];
+                m.setVisible(true);
             }else{
                 JOptionPane.showMessageDialog(this, "El usuario no existe en la base de datos");
             }

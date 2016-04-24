@@ -74,22 +74,26 @@ public class Conexion {
         return false;
     }
 
-    public int validateLogin(String user, String password) {
+    public String[] validateLogin(String user, String password) {
+        String[] dataPatient = new String[2];
+        
         try {
-            query = conection.prepareStatement("SELECT idPerfil FROM usuario WHERE usuario = ? AND clave =  MD5(?)");
+            query = conection.prepareStatement("SELECT idPerfil, idPaciente FROM usuario WHERE usuario = ? AND clave =  MD5(?)");
             query.setString(1, user);
             query.setString(2, password);
 
             data = query.executeQuery();
 
             if(data.next()){
-                return data.getInt("idPerfil");
+                dataPatient[0] = data.getString("idPerfil");
+                dataPatient[1] = data.getString("idPaciente");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         
-        return -1;
+        return dataPatient;
     }
     
     public ResultSet getConsultorios(){
@@ -238,5 +242,18 @@ public class Conexion {
         }
         
         return false;
+    }
+    
+    public ResultSet getTratamientosByPatient(String idPaciente){
+        try {
+            query = conection.prepareStatement("SELECT tp.codigoTratamiento, t.nombre, tp.valor, tp.estado FROM tratamiento_paciente tp INNER JOIN tratamiento t ON tp.codigoTratamiento = t.codigo WHERE tp.idPaciente = ?");
+            query.setInt(1, Integer.parseInt(idPaciente));
+            data = query.executeQuery();
+            
+            return data;
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }
