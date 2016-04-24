@@ -214,4 +214,29 @@ public class Conexion {
         
         return true;
     }
+    
+    public boolean validateTratamientoPatient(String idTratamiento, String idConsultorio, String idPaciente){
+        try {
+            query = conection.prepareStatement("SELECT * FROM tratamiento_paciente WHERE codigoTratamiento = ? AND idConsultorio = ? AND idPaciente = ?");
+            query.setInt(1, Integer.parseInt(idTratamiento));
+            query.setInt(2, Integer.parseInt(idConsultorio));
+            query.setInt(3, Integer.parseInt(idPaciente));
+            
+            data = query.executeQuery();
+            
+            while(data.next()){
+                if(data.getString("idPaciente") != null){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+            
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        
+        return false;
+    }
 }

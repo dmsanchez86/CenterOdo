@@ -305,18 +305,22 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
         }else{
             String valor = txtValorTratamiento.getText();
             
-            if(con.registerTratamientoPatient(idTratamiento, idConsultorio, idPaciente, valor)){
-                jcbConsultorio.setSelectedIndex(0);
-                jcbPacientes.setSelectedIndex(0);
-                txtValorTratamiento.setText(null);
-                
-                idConsultorio = "";
-                idPaciente = "";
-                idTratamiento = "";
-                
-                JOptionPane.showMessageDialog(this, "Registro exitoso");
+            if(con.validateTratamientoPatient(idTratamiento, idConsultorio, idPaciente)){
+                JOptionPane.showMessageDialog(this, "El paciente ya esta en ese tratamiento");
             }else{
-                JOptionPane.showMessageDialog(this, "Error al intentar registrar el tratamiento");
+                if(con.registerTratamientoPatient(idTratamiento, idConsultorio, idPaciente, valor)){
+                    jcbConsultorio.setSelectedIndex(0);
+                    jcbPacientes.setSelectedIndex(0);
+                    txtValorTratamiento.setText(null);
+
+                    idConsultorio = "";
+                    idPaciente = "";
+                    idTratamiento = "";
+
+                    JOptionPane.showMessageDialog(this, "Registro exitoso");
+                }else{
+                    JOptionPane.showMessageDialog(this, "Error al intentar registrar el tratamiento");
+                }
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
