@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2016 at 09:28 PM
+-- Generation Time: Apr 25, 2016 at 01:03 AM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -61,6 +61,14 @@ CREATE TABLE `consultorio` (
   `direccion` varchar(50) DEFAULT NULL,
   `telefono` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `consultorio`
+--
+
+INSERT INTO `consultorio` (`id`, `nombre`, `direccion`, `telefono`) VALUES
+(1, 'JAIBANA', 'Palogrande', '8879080'),
+(2, 'COOMEVA', 'El Centro', '8768888');
 
 -- --------------------------------------------------------
 
@@ -139,6 +147,9 @@ CREATE TABLE `paciente` (
 --
 
 INSERT INTO `paciente` (`id`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `direccion`, `telefono`) VALUES
+(1, 'admin', '', '', 'manizales', '11111111'),
+(2, 'pers', '', '', 'manizales', '22222222'),
+(3, 'aux', '', '', 'manizales', '22222222'),
 (33333333, 'Mariana', 'Gutierrez', 'Arbelaez', 'Solferino', '3203768421'),
 (45454545, 'Pepe', 'Perez', 'Perez', 'El centro', '23423445'),
 (234345345, 'Sergyv', 'Stakosky', 'Marov', 'St Petersburgo', '44455667567'),
@@ -182,6 +193,17 @@ CREATE TABLE `planes_consultorio` (
   `valor` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `planes_consultorio`
+--
+
+INSERT INTO `planes_consultorio` (`id`, `idConsultorio`, `codigoTratamiento`, `valor`) VALUES
+(1, 1, 1, 1000000),
+(2, 1, 2, 4500000),
+(3, 1, 3, 1500000),
+(4, 2, 1, 800000),
+(5, 2, 2, 455000);
+
 -- --------------------------------------------------------
 
 --
@@ -206,10 +228,10 @@ INSERT INTO `tratamiento` (`codigo`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tratamientopaciente`
+-- Table structure for table `tratamiento_paciente`
 --
 
-CREATE TABLE `tratamientopaciente` (
+CREATE TABLE `tratamiento_paciente` (
   `numero` int(11) NOT NULL,
   `codigoTratamiento` int(11) NOT NULL,
   `idConsultorio` int(11) NOT NULL,
@@ -217,6 +239,16 @@ CREATE TABLE `tratamientopaciente` (
   `valor` bigint(20) NOT NULL,
   `estado` enum('En Proceso','Finalizado','Comenzado') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tratamiento_paciente`
+--
+
+INSERT INTO `tratamiento_paciente` (`numero`, `codigoTratamiento`, `idConsultorio`, `idPaciente`, `valor`, `estado`) VALUES
+(2, 1, 2, 1053844273, 800000, 'En Proceso'),
+(3, 2, 2, 1053844273, 455000, 'En Proceso'),
+(4, 1, 2, 45454545, 800000, 'En Proceso'),
+(5, 2, 2, 45454545, 455000, 'En Proceso');
 
 -- --------------------------------------------------------
 
@@ -242,7 +274,10 @@ INSERT INTO `usuario` (`id`, `usuario`, `clave`, `idPaciente`, `idPerfil`) VALUE
 (3, '95063017168', '827ccb0eea8a706c4c34a16891f84e7b', 95063017168, 4),
 (4, '45454545', '827ccb0eea8a706c4c34a16891f84e7b', 45454545, 4),
 (5, '234345345', '827ccb0eea8a706c4c34a16891f84e7b', 234345345, 4),
-(6, '33333333', '827ccb0eea8a706c4c34a16891f84e7b', 33333333, 4);
+(6, '33333333', '827ccb0eea8a706c4c34a16891f84e7b', 33333333, 4),
+(7, '1', '827ccb0eea8a706c4c34a16891f84e7b', 1, 1),
+(8, '2', '827ccb0eea8a706c4c34a16891f84e7b', 2, 2),
+(9, '3', '827ccb0eea8a706c4c34a16891f84e7b', 3, 3);
 
 --
 -- Indexes for dumped tables
@@ -327,9 +362,9 @@ ALTER TABLE `tratamiento`
   ADD PRIMARY KEY (`codigo`);
 
 --
--- Indexes for table `tratamientopaciente`
+-- Indexes for table `tratamiento_paciente`
 --
-ALTER TABLE `tratamientopaciente`
+ALTER TABLE `tratamiento_paciente`
   ADD PRIMARY KEY (`numero`),
   ADD KEY `codigoTratamiento` (`codigoTratamiento`),
   ADD KEY `idPaciente` (`idPaciente`),
@@ -361,7 +396,7 @@ ALTER TABLE `cita`
 -- AUTO_INCREMENT for table `consultorio`
 --
 ALTER TABLE `consultorio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `cotizacion`
 --
@@ -391,22 +426,22 @@ ALTER TABLE `perfiles_usuarios`
 -- AUTO_INCREMENT for table `planes_consultorio`
 --
 ALTER TABLE `planes_consultorio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `tratamiento`
 --
 ALTER TABLE `tratamiento`
   MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT for table `tratamientopaciente`
+-- AUTO_INCREMENT for table `tratamiento_paciente`
 --
-ALTER TABLE `tratamientopaciente`
-  MODIFY `numero` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `tratamiento_paciente`
+  MODIFY `numero` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- Constraints for dumped tables
 --
@@ -429,7 +464,7 @@ ALTER TABLE `cita`
 -- Constraints for table `cotizacion`
 --
 ALTER TABLE `cotizacion`
-  ADD CONSTRAINT `cotizacion_ibfk_1` FOREIGN KEY (`numeroTratamientoPaciente`) REFERENCES `tratamientopaciente` (`numero`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `cotizacion_ibfk_1` FOREIGN KEY (`numeroTratamientoPaciente`) REFERENCES `tratamiento_paciente` (`numero`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `historial_paciente`
@@ -453,13 +488,12 @@ ALTER TABLE `planes_consultorio`
   ADD CONSTRAINT `planes_consultorio_ibfk_2` FOREIGN KEY (`codigoTratamiento`) REFERENCES `tratamiento` (`codigo`);
 
 --
--- Constraints for table `tratamientopaciente`
+-- Constraints for table `tratamiento_paciente`
 --
-ALTER TABLE `tratamientopaciente`
-  ADD CONSTRAINT `tratamientopaciente_ibfk_1` FOREIGN KEY (`codigoTratamiento`) REFERENCES `tratamiento` (`codigo`),
-  ADD CONSTRAINT `tratamientopaciente_ibfk_2` FOREIGN KEY (`idPaciente`) REFERENCES `paciente` (`id`),
-  ADD CONSTRAINT `tratamientopaciente_ibfk_3` FOREIGN KEY (`numero`) REFERENCES `cita` (`numeroTratamientoPaciente`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tratamientopaciente_ibfk_4` FOREIGN KEY (`idConsultorio`) REFERENCES `consultorio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `tratamiento_paciente`
+  ADD CONSTRAINT `tratamiento_paciente_ibfk_1` FOREIGN KEY (`codigoTratamiento`) REFERENCES `tratamiento` (`codigo`),
+  ADD CONSTRAINT `tratamiento_paciente_ibfk_2` FOREIGN KEY (`idPaciente`) REFERENCES `paciente` (`id`),
+  ADD CONSTRAINT `tratamiento_paciente_ibfk_4` FOREIGN KEY (`idConsultorio`) REFERENCES `consultorio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `usuario`
