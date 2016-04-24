@@ -127,7 +127,7 @@ public class Conexion {
             data = query.executeQuery();
             
             return data;
-        } catch (Exception e) {
+        } catch (SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
             return null;
         }
@@ -142,7 +142,7 @@ public class Conexion {
             while( data.next() ){
                 return data.getInt(1);
             }
-        } catch (Exception e) {
+        } catch (SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
         }
         
@@ -175,5 +175,23 @@ public class Conexion {
         }
         
         return num;
+    }
+    
+    public int getValueTratamientoConsultorio(String idConsultorio, String idTratamiento){
+        
+        try {
+            query = conection.prepareStatement("SELECT valor FROM planes_consultorio WHERE idConsultorio = ? AND codigoTratamiento = ?");
+            query.setInt(1, Integer.parseInt(idConsultorio));
+            query.setInt(2, Integer.parseInt(idTratamiento));
+            data = query.executeQuery();
+            
+            while( data.next() ){
+                return data.getInt(1);
+            }
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return -1;
     }
 }

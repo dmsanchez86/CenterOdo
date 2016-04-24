@@ -19,6 +19,9 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
     String[] idsConsultorios;
     String[] idsTratamientos;
     String[] idsPacientes;
+    String idConsultorio;
+    String idTratamiento;
+    String idPaciente;
     Conexion con;
     DefaultComboBoxModel comboModel;
     
@@ -67,8 +70,7 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
                 comboP.addElement(dataPacientes.getString("nombre") + " "+dataPacientes.getString("apellidoPaterno")+ " "+dataPacientes.getString("apellidoMaterno"));
                 num++;
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
         
         jcbPacientes.setModel(comboP);
         
@@ -137,6 +139,11 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
         jLabel2.setText("Tratamiento");
 
         jcbTratamiento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbTratamiento.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbTratamientoItemStateChanged(evt);
+            }
+        });
 
         jLabel3.setText("Consultorio");
 
@@ -229,8 +236,8 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(evt.getStateChange() == ItemEvent.SELECTED){
             if(jcbConsultorio.getSelectedIndex() != 0){
-                String idConsultorio = idsConsultorios[jcbConsultorio.getSelectedIndex() - 1];
-                System.out.println(idConsultorio);
+                idConsultorio = idsConsultorios[jcbConsultorio.getSelectedIndex() - 1];
+                
                 idsTratamientos = new String[con.getNumberTratamientosByConsultorio(idConsultorio)];
                 ResultSet dataTratamiento = con.getTratamientosByConsultorio(idConsultorio);
                 DefaultComboBoxModel model = new DefaultComboBoxModel();
@@ -245,7 +252,6 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
                         n++;
                     }
                 } catch (Exception e) {
-                    System.out.println("error consulta tratamiento");
                     System.out.println(e.getMessage());
                 }
                 
@@ -256,6 +262,23 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jcbConsultorioItemStateChanged
+
+    private void jcbTratamientoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbTratamientoItemStateChanged
+        // TODO add your handling code here:
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+            if(jcbTratamiento.getSelectedIndex() != 0){
+                idTratamiento = idsTratamientos[jcbTratamiento.getSelectedIndex() - 1];
+                
+                int valorTramiento = con.getValueTratamientoConsultorio(idConsultorio, idTratamiento);
+                
+                if(valorTramiento != -1){
+                    txtValorTratamiento.setText(""+valorTramiento);
+                }
+            }else{
+                txtValorTratamiento.setText(null);
+            }
+        }
+    }//GEN-LAST:event_jcbTratamientoItemStateChanged
 
     /**
      * @param args the command line arguments
