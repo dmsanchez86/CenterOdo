@@ -168,10 +168,12 @@ public class Login extends javax.swing.JFrame {
             if(rolUser == 1){
             
             }else if(rolUser == 2){
-            
+                this.setVisible(false);
+                PersonalMedicoForm m = new PersonalMedicoForm();
+                m.setVisible(true);
             }else if(rolUser == 3){
                 this.setVisible(false);
-                MainForm m = new MainForm();
+                AuxClinicoForm m = new AuxClinicoForm();
                 m.setVisible(true);
             }else if(rolUser == 4){
                 JOptionPane.showMessageDialog(this, "Eres un paciente");

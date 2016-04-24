@@ -198,7 +198,7 @@ public class RegisterPatient extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        MainForm m = new MainForm();
+        AuxClinicoForm m = new AuxClinicoForm();
         m.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
