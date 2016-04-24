@@ -148,4 +148,32 @@ public class Conexion {
         
         return num;
     }
+    
+    public ResultSet getPacientes(){
+        try {
+            query = conection.prepareStatement("SELECT * FROM paciente p INNER JOIN usuario u ON p.id = u.idPaciente WHERE u.idPerfil = 4");
+            data = query.executeQuery();
+            
+            return data;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
+    public int getNumberPacientes(){
+        int num = 0;
+        try {
+            query = conection.prepareStatement("SELECT COUNT(*) FROM paciente p INNER JOIN usuario u ON p.id = u.idPaciente WHERE u.idPerfil = 4");
+            data = query.executeQuery();
+            
+            while( data.next() ){
+                return data.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return num;
+    }
 }

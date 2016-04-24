@@ -52,6 +52,26 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
         
         jcbConsultorio.setModel(comboModel);
         
+        int numberPacientes = con.getNumberPacientes();
+        ResultSet dataPacientes = con.getPacientes();
+        
+        idsPacientes = new String[numberPacientes];
+        
+        DefaultComboBoxModel comboP = new DefaultComboBoxModel();
+        comboP.addElement("Seleccione el Paciente");
+        
+        try {
+            int num = 0;
+            while(dataPacientes.next()){
+                idsPacientes[num] = dataPacientes.getString("id");
+                comboP.addElement(dataPacientes.getString("nombre") + " "+dataPacientes.getString("apellidoPaterno")+ " "+dataPacientes.getString("apellidoMaterno"));
+                num++;
+            }
+        } catch (Exception e) {
+        }
+        
+        jcbPacientes.setModel(comboP);
+        
     }
 
     /**
@@ -71,7 +91,7 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jcbConsultorio = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        jcbPacientes = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         txtValorTratamiento = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -129,7 +149,7 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
 
         jLabel4.setText("Paciente");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbPacientes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setText("Valor");
 
@@ -153,7 +173,7 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jcbPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
@@ -191,7 +211,7 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addContainerGap(42, Short.MAX_VALUE))
@@ -275,7 +295,6 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -284,6 +303,7 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox jcbConsultorio;
+    private javax.swing.JComboBox jcbPacientes;
     private javax.swing.JComboBox jcbTratamiento;
     private javax.swing.JTextField txtValorTratamiento;
     // End of variables declaration//GEN-END:variables
