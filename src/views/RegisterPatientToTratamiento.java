@@ -5,6 +5,7 @@
  */
 package views;
 
+import java.awt.event.ItemEvent;
 import java.sql.ResultSet;
 import javax.swing.DefaultComboBoxModel;
 import models.Conexion;
@@ -16,11 +17,16 @@ import models.Conexion;
 public class RegisterPatientToTratamiento extends javax.swing.JFrame {
 
     String[] idsConsultorios;
+    String[] idsTratamientos;
+    String[] idsPacientes;
     Conexion con;
     DefaultComboBoxModel comboModel;
     
     public RegisterPatientToTratamiento() {
         initComponents();
+        
+        jcbTratamiento.removeAllItems();
+        txtValorTratamiento.setEditable(false);
         
         con = new Conexion();
         con.conectToDatabase();
@@ -72,6 +78,8 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Registro pacientes a un tratamiento");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -113,6 +121,11 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
         jLabel3.setText("Consultorio");
 
         jcbConsultorio.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbConsultorio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbConsultorioItemStateChanged(evt);
+            }
+        });
 
         jLabel4.setText("Paciente");
 
@@ -185,11 +198,44 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jcbConsultorioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbConsultorioItemStateChanged
+        // TODO add your handling code here:
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+            if(jcbConsultorio.getSelectedIndex() != 0){
+                String idConsultorio = idsConsultorios[jcbConsultorio.getSelectedIndex() - 1];
+                System.out.println(idConsultorio);
+                idsTratamientos = new String[con.getNumberTratamientosByConsultorio(idConsultorio)];
+                ResultSet dataTratamiento = con.getTratamientosByConsultorio(idConsultorio);
+                DefaultComboBoxModel model = new DefaultComboBoxModel();
+                
+                model.addElement("Seleccione Tratamiento");
+                
+                try {
+                    int n = 0;
+                    while(dataTratamiento.next()){
+                        idsTratamientos[n] = dataTratamiento.getString("codigoTratamiento");
+                        model.addElement(dataTratamiento.getString("nombre"));
+                        n++;
+                    }
+                } catch (Exception e) {
+                    System.out.println("error consulta tratamiento");
+                    System.out.println(e.getMessage());
+                }
+                
+                jcbTratamiento.setModel(model);
+            }else{
+                jcbTratamiento.removeAllItems();
+                txtValorTratamiento.setText(null);
+            }
+        }
+    }//GEN-LAST:event_jcbConsultorioItemStateChanged
 
     /**
      * @param args the command line arguments

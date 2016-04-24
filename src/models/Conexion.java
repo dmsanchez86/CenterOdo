@@ -119,4 +119,33 @@ public class Conexion {
         
         return num;
     }
+    
+    public ResultSet getTratamientosByConsultorio(String idConsultorio){
+        try {
+            query = conection.prepareStatement("SELECT * FROM planes_consultorio pc INNER JOIN tratamiento t ON pc.codigoTratamiento = t.codigo WHERE pc.idConsultorio = ?");
+            query.setInt(1, Integer.parseInt(idConsultorio));
+            data = query.executeQuery();
+            
+            return data;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
+    public int getNumberTratamientosByConsultorio(String idConsultorio){
+        int num = 0;
+        try {
+            query = conection.prepareStatement("SELECT COUNT(*) FROM planes_consultorio INNER JOIN tratamiento t ON pc.codigoTratamiento = t.codigo WHERE pc.idConsultorio = ?");
+            query.setInt(1, Integer.parseInt(idConsultorio));
+            
+            while( data.next() ){
+                return data.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return num;
+    }
 }
