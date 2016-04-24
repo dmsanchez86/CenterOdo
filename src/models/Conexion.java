@@ -194,4 +194,24 @@ public class Conexion {
         
         return -1;
     }
+    
+    public boolean registerTratamientoPatient(String idTratamiento, String idConsultorio, String idPaciente, String valor){
+        try {
+            query = conection.prepareStatement("INSERT INTO tratamiento_paciente VALUES(?,?,?,?,?,?)");
+            query.setInt(1, 0);
+            query.setInt(2, Integer.parseInt(idTratamiento));
+            query.setInt(3, Integer.parseInt(idConsultorio));
+            query.setInt(4, Integer.parseInt(idPaciente));
+            query.setInt(5, Integer.parseInt(valor));
+            query.setString(6, "En Proceso");
+            
+            query.executeUpdate();
+            
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        
+        return true;
+    }
 }

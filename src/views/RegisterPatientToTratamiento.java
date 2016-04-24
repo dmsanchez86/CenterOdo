@@ -8,6 +8,7 @@ package views;
 import java.awt.event.ItemEvent;
 import java.sql.ResultSet;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import models.Conexion;
 
 /*
@@ -157,10 +158,20 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
         jLabel4.setText("Paciente");
 
         jcbPacientes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbPacientes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbPacientesItemStateChanged(evt);
+            }
+        });
 
         jLabel5.setText("Valor");
 
         jButton1.setText("Registrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -230,6 +241,9 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+        PersonalMedicoForm p = new PersonalMedicoForm();
+        p.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jcbConsultorioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbConsultorioItemStateChanged
@@ -279,6 +293,42 @@ public class RegisterPatientToTratamiento extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jcbTratamientoItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if(jcbConsultorio.getSelectedIndex() == 0){
+            jcbConsultorio.requestFocus();
+        }else if(jcbTratamiento.getSelectedIndex() == 0){
+            jcbTratamiento.requestFocus();
+        }else if(jcbPacientes.getSelectedIndex() == 0){
+            jcbPacientes.requestFocus();
+        }else{
+            String valor = txtValorTratamiento.getText();
+            
+            if(con.registerTratamientoPatient(idTratamiento, idConsultorio, idPaciente, valor)){
+                jcbConsultorio.setSelectedIndex(0);
+                jcbPacientes.setSelectedIndex(0);
+                txtValorTratamiento.setText(null);
+                
+                idConsultorio = "";
+                idPaciente = "";
+                idTratamiento = "";
+                
+                JOptionPane.showMessageDialog(this, "Registro exitoso");
+            }else{
+                JOptionPane.showMessageDialog(this, "Error al intentar registrar el tratamiento");
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jcbPacientesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbPacientesItemStateChanged
+        // TODO add your handling code here:
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+            if(jcbPacientes.getSelectedIndex() != 0){
+                idPaciente = idsPacientes[jcbPacientes.getSelectedIndex() - 1];
+            }
+        }
+    }//GEN-LAST:event_jcbPacientesItemStateChanged
 
     /**
      * @param args the command line arguments
