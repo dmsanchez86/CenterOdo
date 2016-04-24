@@ -173,6 +173,11 @@ public class Login extends javax.swing.JFrame {
                 this.setVisible(false);
                 MainForm m = new MainForm();
                 m.setVisible(true);
+            }else if(rolUser == 4){
+                JOptionPane.showMessageDialog(this, "Eres un paciente");
+//                this.setVisible(false);
+//                MainForm m = new MainForm();
+//                m.setVisible(true);
             }else{
                 JOptionPane.showMessageDialog(this, "El usuario no existe en la base de datos");
             }
