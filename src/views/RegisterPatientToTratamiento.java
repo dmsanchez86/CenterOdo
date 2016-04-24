@@ -5,17 +5,47 @@
  */
 package views;
 
+import java.sql.ResultSet;
+import javax.swing.DefaultComboBoxModel;
+import models.Conexion;
+
 /*
  * @author Daniel M. Sánchez
  * @website http://dmsanchez86.github.io
  */
 public class RegisterPatientToTratamiento extends javax.swing.JFrame {
 
-    /**
-     * Creates new form RegisterPatientToTratamiento
-     */
+    String[] idsConsultorios;
+    Conexion con;
+    DefaultComboBoxModel comboModel;
+    
     public RegisterPatientToTratamiento() {
         initComponents();
+        
+        con = new Conexion();
+        con.conectToDatabase();
+        
+        int numberConsultorios = con.getNumberConsultorios();
+        ResultSet dataConsultorios = con.getConsultorios();
+        
+        idsConsultorios = new String[numberConsultorios];
+        
+        comboModel = new DefaultComboBoxModel();
+        comboModel.addElement("Seleccione un consultorio");
+        
+        try {
+            int countIdsConsultorios = 0;
+            while(dataConsultorios.next()){
+                idsConsultorios[countIdsConsultorios] = dataConsultorios.getString("id");
+                comboModel.addElement(dataConsultorios.getString("nombre"));
+                countIdsConsultorios++;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        jcbConsultorio.setModel(comboModel);
+        
     }
 
     /**

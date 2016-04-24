@@ -91,4 +91,32 @@ public class Conexion {
         
         return -1;
     }
+    
+    public ResultSet getConsultorios(){
+        try {
+            query = conection.prepareStatement("SELECT * FROM consultorio");
+            data = query.executeQuery();
+            
+            return data;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
+    public int getNumberConsultorios(){
+        int num = 0;
+        try {
+            query = conection.prepareStatement("SELECT COUNT(*) FROM consultorio");
+            data = query.executeQuery();
+            
+            while( data.next() ){
+                return data.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return num;
+    }
 }
